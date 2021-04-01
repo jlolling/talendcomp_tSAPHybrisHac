@@ -1,0 +1,42 @@
+<%@ jet 
+	imports="
+		org.talend.core.model.process.INode 
+		org.talend.core.model.process.ElementParameterParser 
+		org.talend.core.model.process.IConnection
+		org.talend.core.model.process.IConnectionCategory
+		org.talend.core.model.utils.NodeUtil
+		org.talend.designer.codegen.config.CodeGeneratorArgument
+		org.talend.core.model.metadata.IMetadataTable 
+		org.talend.core.model.metadata.IMetadataColumn 
+		org.talend.core.model.metadata.types.JavaTypesManager
+		java.util.List 
+		java.util.ArrayList 
+	" 
+%>
+<% 
+	CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
+	INode node = (INode) codeGenArgument.getArgument();
+	String cid = node.getUniqueName();
+	IConnection conn = null;
+	List<? extends IConnection> conns = NodeUtil.getIncomingConnections(node, IConnectionCategory.DATA);
+	if (conns.size() > 0) {
+		conn = conns.get(0);
+	}
+	List<IMetadataColumn> listColumns = new ArrayList<IMetadataColumn>(); // dummy
+	List<IMetadataTable> metadatas = node.getMetadataList();
+	if (metadatas != null && metadatas.size() > 0) {
+    	IMetadataTable metadata = metadatas.get(0);
+    	if (metadata != null) {
+    		listColumns = metadata.getListColumns();
+		}
+	}
+    String inputColumn = ElementParameterParser.getValue(node, "__IMPEX_DATA_INPUT_COLUMN__");
+    if (conn != null) { %>
+	<%=cid%>.addDataRow(<%=conn.getName()%>.<%=inputColumn%>);
+	nb_line_<%=cid%>++;    
+<%  	for (IMetadataColumn mc : listColumns) {
+			if (mc.isKey()) { %>
+	<%=cid%>.setCorrelationKey("<%=mc.getLabel()%>", <%=conn.getName()%>.<%=mc.getLabel()%>);
+<%			}
+		} 
+	} %>

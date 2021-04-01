@@ -1,0 +1,75 @@
+<%@ jet 
+	imports="
+		org.talend.core.model.process.INode 
+		org.talend.core.model.process.ElementParameterParser 
+		org.talend.core.model.metadata.IMetadataTable 
+		org.talend.core.model.metadata.IMetadataColumn 
+		org.talend.core.model.process.IConnection
+		org.talend.core.model.process.IConnectionCategory
+		org.talend.core.model.utils.NodeUtil
+		org.talend.designer.codegen.config.CodeGeneratorArgument
+		org.talend.core.model.metadata.types.JavaTypesManager
+		java.util.List 
+		java.util.ArrayList 
+    	java.util.Map		
+	" 
+%>
+<% 
+	CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
+	INode node = (INode) codeGenArgument.getArgument();
+	String cid = node.getUniqueName();
+	IConnection conn = null;
+	List<? extends IConnection> outConns = NodeUtil.getOutgoingConnections(node, IConnectionCategory.DATA);
+	if (outConns.size() > 0) {
+		conn = outConns.get(0);
+	}
+	List<IMetadataColumn> listColumns = new ArrayList<IMetadataColumn>(); // dummy
+	List<IMetadataTable> metadatas = node.getMetadataList();
+	if (metadatas != null && metadatas.size() > 0) {
+    	IMetadataTable metadata = metadatas.get(0);
+    	if (metadata != null) {
+    		listColumns = metadata.getListColumns();
+		}
+	}
+    String componentId = ElementParameterParser.getValue(node, "__IMPEX_IMPORT_COMPONENT__");
+%>
+	int nb_line_<%=cid%> = 0;
+	de.jlo.talendcomp.hac.impex.ImpexImportRunner <%=cid%> = (de.jlo.talendcomp.hac.impex.ImpexImportRunner) globalMap.get("<%=componentId%>");
+	if (<%=cid%> == null) {
+		throw new Exception("Component tSAPHybrisHacImpexImport with unique-id: <%=componentId%> not found");
+	}
+	<%=cid%>.matchImportErrors();
+	List<de.jlo.talendcomp.hac.impex.ImpexImportError> <%=cid%>_errorList = <%=cid%>.getImportErrors();
+<%  if (conn != null) { %>
+	for (de.jlo.talendcomp.hac.impex.ImpexImportError <%=cid%>_error : <%=cid%>_errorList) {
+		nb_line_<%=cid%>++;
+		<%=conn.getName()%>.ERROR_LINE_CONTENT = <%=cid%>_error.getErrorMessage();
+		<%=conn.getName()%>.ERROR_LINE_NUMBER = <%=cid%>_error.getErrorLineNumber();
+		<%=conn.getName()%>.DATA_LINE_NUMBER = <%=cid%>_error.getDataLineNumber();
+<%		for (int i = 0; i < listColumns.size(); i++) {
+			IMetadataColumn mc = listColumns.get(i);
+			String name = mc.getLabel();
+			if (name.equalsIgnoreCase("ERROR_LINE_CONTENT") || name.equalsIgnoreCase("ERROR_LINE_NUMBER") || name.equalsIgnoreCase("DATA_LINE_NUMBER")) {
+				continue;
+			}
+			String javaClassName = mc.getTalendType().substring(3);
+			boolean isDateValue = javaClassName.contains("Date");
+			boolean isNullable = mc.isNullable(); %>
+		try {
+<%			if (isDateValue) { 
+				String pattern = mc.getPattern(); 
+				if (pattern == null || pattern.trim().isEmpty()) {
+					pattern = "null";
+				} %>
+		<%=conn.getName()%>.<%=mc.getLabel()%> = <%=cid%>_error.getOutputValueAsDate("<%=name%>",<%=isNullable%>,<%=pattern%>);
+<%			} else { %>
+		<%=conn.getName()%>.<%=mc.getLabel()%> = <%=cid%>_error.getOutputValueAs<%=javaClassName%>("<%=name%>",<%=isNullable%>);
+<%			} %>
+		} catch (Exception ve) {
+			String message = "Get value for column: <%=name%> failed: " + ve.getMessage();
+			globalMap.put("<%=cid%>_ERROR_MESSAGE", message);
+			throw new Exception(message, ve);
+		}
+<%		} // for
+	} if (conn != null) %>
+	
