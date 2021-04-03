@@ -2,41 +2,30 @@
 	imports="
 		org.talend.core.model.process.INode 
 		org.talend.core.model.process.ElementParameterParser 
-		org.talend.core.model.process.IConnection
-		org.talend.core.model.process.IConnectionCategory
-		org.talend.core.model.utils.NodeUtil
 		org.talend.designer.codegen.config.CodeGeneratorArgument
-		org.talend.core.model.metadata.IMetadataTable 
-		org.talend.core.model.metadata.IMetadataColumn 
-		org.talend.core.model.metadata.types.JavaTypesManager
-		java.util.List 
-		java.util.ArrayList 
 	" 
 %>
 <% 
 	CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
 	INode node = (INode) codeGenArgument.getArgument();
 	String cid = node.getUniqueName();
-	IConnection conn = null;
-	List<? extends IConnection> conns = NodeUtil.getIncomingConnections(node, IConnectionCategory.DATA);
-	if (conns.size() > 0) {
-		conn = conns.get(0);
+    String header = ElementParameterParser.getValue(node, "__IMPEX_HEADER__");
+    if (header != null) {
+	   header = header.trim().replace("\r", "").replace("\n", "\\n\" +\n\"");
+    }
+    String outputFile = ElementParameterParser.getValue(node, "__OUTPUT_ZIP_FILE__");
+%>
+	// execute export
+	try {
+		String header = <%=header%>
+		globalMap.put("<%=cid%>_IMPEX_HEADER", header);
+		<%=cid%>.setImpexHeaderWitFX(header);
+		String outputFile = <%=outputFile%>
+		globalMap.put("<%=cid%>_OUTPUT_ZIP_FILE", outputFile);
+		<%=cid%>.setOutputZipFile(outputFile);
+		<%=cid%>.execute();
+	} catch (Exception e) {
+		String message = "Execute Export failed: " + e.getMessage();
+		globalMap.put("<%=cid%>_ERROR_MESSAGE", message);
+		throw e;
 	}
-	List<IMetadataColumn> listColumns = new ArrayList<IMetadataColumn>(); // dummy
-	List<IMetadataTable> metadatas = node.getMetadataList();
-	if (metadatas != null && metadatas.size() > 0) {
-    	IMetadataTable metadata = metadatas.get(0);
-    	if (metadata != null) {
-    		listColumns = metadata.getListColumns();
-		}
-	}
-    String inputColumn = ElementParameterParser.getValue(node, "__IMPEX_DATA_INPUT_COLUMN__");
-    if (conn != null) { %>
-	<%=cid%>.addDataRow(<%=conn.getName()%>.<%=inputColumn%>);
-	nb_line_<%=cid%>++;    
-<%  	for (IMetadataColumn mc : listColumns) {
-			if (mc.isKey()) { %>
-	<%=cid%>.setCorrelationKey("<%=mc.getLabel()%>", <%=conn.getName()%>.<%=mc.getLabel()%>);
-<%			}
-		} 
-	} %>

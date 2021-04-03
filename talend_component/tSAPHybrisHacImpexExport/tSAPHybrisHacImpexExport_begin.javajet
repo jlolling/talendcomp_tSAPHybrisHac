@@ -38,12 +38,6 @@
    if (hybrisPassword == null || hybrisPassword.trim().isEmpty()) {
    	  hybrisPassword = "null";
    }
-   String header = ElementParameterParser.getValue(node, "__IMPEX_HEADER__");
-   if (header != null) {
-	   header = header.trim().replace("\r", "").replace("\n", "\\n\" +\n\"");
-   } else {
-   	  header = "null";
-   }
    boolean needHtAccessAuth = "true".equals(ElementParameterParser.getValue(node, "__NEED_HTACCESS_AUTH__"));
    String htaccessLogin = ElementParameterParser.getValue(node, "__HTACCESS_LOGIN__");
    if (needHtAccessAuth == false || htaccessLogin == null || htaccessLogin.trim().isEmpty()) {
@@ -55,9 +49,8 @@
    }
 %>
 	int nb_line_<%=cid%> = 0;
-	de.jlo.talendcomp.hac.impex.ImpexImportRunner <%=cid%> = new de.jlo.talendcomp.hac.impex.ImpexImportRunner();
+	de.jlo.talendcomp.hac.impex.ImpexExportRunner <%=cid%> = new de.jlo.talendcomp.hac.impex.ImpexExportRunner();
 	globalMap.put("<%=cid%>", <%=cid%>);
-	<%=cid%>.setImpexHeader(<%=header%>);
 	// connect to Hybris
 	try {
 		<%=cid%>.connect(

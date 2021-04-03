@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.jlo.talendcomp.hac</groupId>
 	<artifactId>jlo-talendcomp-hac</artifactId>
-	<version>3.2</version>
+	<version>4.0</version>
 	<name>Hybris Admin Console Interface</name>
 
 	<dependencies>
@@ -80,6 +80,15 @@
 						</goals>
 						<configuration>
 							<componentName>tSAPHybrisHacImpexImport</componentName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>tSAPHybrisHacImpexExport</id>
+						<goals>
+							<goal>component</goal>
+						</goals>
+						<configuration>
+							<componentName>tSAPHybrisHacImpexExport</componentName>
 						</configuration>
 					</execution>
 					<execution>
