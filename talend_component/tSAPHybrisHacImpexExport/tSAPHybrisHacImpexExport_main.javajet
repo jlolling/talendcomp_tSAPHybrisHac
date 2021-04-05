@@ -17,13 +17,15 @@
 %>
 	// execute export
 	try {
-		String header = <%=header%>
+		System.out.println("Exporting...");
+		String header = <%=header%>;
 		globalMap.put("<%=cid%>_IMPEX_HEADER", header);
-		<%=cid%>.setImpexHeaderWitFX(header);
-		String outputFile = <%=outputFile%>
+		<%=cid%>.setImpexHeaderWithFX(header);
+		String outputFile = <%=outputFile%>;
 		globalMap.put("<%=cid%>_OUTPUT_ZIP_FILE", outputFile);
 		<%=cid%>.setOutputZipFile(outputFile);
 		<%=cid%>.execute();
+		System.out.println("Export finished. Output zip file: " + outputFile);
 	} catch (Exception e) {
 		String message = "Execute Export failed: " + e.getMessage();
 		globalMap.put("<%=cid%>_ERROR_MESSAGE", message);
