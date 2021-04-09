@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.jlo.talendcomp.hac</groupId>
 	<artifactId>jlo-talendcomp-hac</artifactId>
-	<version>4.0</version>
+	<version>4.1</version>
 	<name>Hybris Admin Console Interface</name>
 
 	<dependencies>
@@ -61,7 +61,7 @@
 				<configuration>
 					<copyFromSourceBaseDir>${project.basedir}/talend_component</copyFromSourceBaseDir>
 					<componentBaseDir>${project.basedir}/talend_component</componentBaseDir>
-					<studioUserComponentFolder>/home/jan-lolling/git/talend_templates/components</studioUserComponentFolder>
+					<studioUserComponentFolder>${custom_component_folder}</studioUserComponentFolder>
 				</configuration>
 				<executions>
 					<execution>

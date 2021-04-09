@@ -25,7 +25,12 @@
 		globalMap.put("<%=cid%>_OUTPUT_ZIP_FILE", outputFile);
 		<%=cid%>.setOutputZipFile(outputFile);
 		<%=cid%>.execute();
-		System.out.println("Export finished. Output zip file: " + outputFile);
+		globalMap.put("<%=cid%>_HAS_RESULTS", <%=cid%>.hasResults()); 
+		if (<%=cid%>.hasResults()) {
+			System.out.println("Export finished. Output zip file: " + outputFile);
+		} else if (<%=cid%>.hasErrors()) {
+			throw new Exception(<%=cid%>.getErrorMessage());
+		}
 	} catch (Exception e) {
 		String message = "Execute Export failed: " + e.getMessage();
 		globalMap.put("<%=cid%>_ERROR_MESSAGE", message);

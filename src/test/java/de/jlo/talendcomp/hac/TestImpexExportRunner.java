@@ -39,7 +39,7 @@ public class TestImpexExportRunner {
 		String htpw = context.getProperty("hac_htaccess_password");
 		ImpexExportRunner r = new ImpexExportRunner();
 		r.connect(endpoint, user, pw, htuser, htpw);
-		String outputFile = "/tmp/test_impex_export.zip";
+		String outputFile = "/var/data/talend/data/testing/compare_daily/test_impex_export.zip";
 		r.setOutputZipFile(outputFile);
 		String impexHeader = "INSERT_UPDATE VendorCustomer; customerCode; vendor(code)[unique = true]; unit(uid)[unique = true]; blocked[default = false]; visibleProducts(code)";
 		r.setImpexHeaderWithFX(impexHeader);

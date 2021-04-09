@@ -19,6 +19,7 @@ public class ImpexExportRunner extends HybrisHac {
 	private String outputZipFile = null;
 	private List<ImpexImportError> importErrors = new ArrayList<>();
 	private List<String> impexErrorResponseLines = null;
+	private boolean hasResults = false;
 	
 	public void execute() throws Exception {
 		if (outputZipFile == null || outputZipFile.trim().isEmpty()) {
@@ -45,13 +46,28 @@ public class ImpexExportRunner extends HybrisHac {
 				for (byte[] b : result) {
 					fout.write(b);
 				}
+				hasResults = true;
 			} catch (Exception e) {
 				throw new Exception("Write result to output zip file: " + outputZipFile + " failed: " + e.getMessage(), e);
 			} finally {
 				fout.flush();
 				fout.close();
 			}	
+		} else {
+			System.err.println("Impex export returns no result. No zip file was created.");
 		}
+	}
+	
+	public String getErrorMessage() {
+		StringBuilder sb = new StringBuilder(); 
+		for (int e = 0, em = impexErrorResponseLines.size(); e < em; e++) {
+			String errorLine = impexErrorResponseLines.get(e);
+			if (TypeUtil.isEmpty(errorLine) == false) {
+				sb.append(TypeUtil.unescapeHtmlEntities(errorLine));
+				sb.append("\n");
+			}
+		}
+		return sb.toString();
 	}
 	
 	public void matchImportErrors() {
@@ -84,6 +100,14 @@ public class ImpexExportRunner extends HybrisHac {
 			throw new IllegalArgumentException("outputFile cannot be null or empty");
 		}
 		this.outputZipFile = outputFile;
+	}
+	
+	public boolean hasErrors() {
+		return impexErrorResponseLines.size() > 0;
+	}
+
+	public boolean hasResults() {
+		return hasResults;
 	}
 	
 }
