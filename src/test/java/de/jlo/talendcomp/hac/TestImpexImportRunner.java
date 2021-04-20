@@ -89,7 +89,7 @@ public class TestImpexImportRunner {
 	public void testConnectionFailedTest() throws Exception {
 		String endpoint = context.getProperty("hac_endpoint");
 		String user = context.getProperty("hac_login");
-		String pw = context.getProperty("hac_password");
+		String pw = "xxxx";
 		String htuser = context.getProperty("hac_htaccess_login");
 		String htpw = context.getProperty("hac_htaccess_password");
 		ImpexImportRunner r = new ImpexImportRunner();

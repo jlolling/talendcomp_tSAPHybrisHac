@@ -24,7 +24,7 @@ import com.sap.hybris.hac.HybrisAdministrationConsole;
 
 public class HybrisHac {
 	
-	protected HybrisAdministrationConsole console = null;
+	private HybrisAdministrationConsole console = null;
 	private Configuration config = null;
 	public static final String TEST_FS_QUERY = "SELECT count(0) as test FROM {Product} where 1=0";
 	public static final int TEST_FS_QUERY_MAX_COUNT = 1;
@@ -96,6 +96,13 @@ public class HybrisHac {
 		if (timeout != null) {
 			this.timeout = timeout;
 		}
+	}
+
+	public HybrisAdministrationConsole getConsole() {
+		if (console == null) {
+			throw new IllegalStateException("Console not connected. Call connect before");
+		}
+		return console;
 	}
 
 }

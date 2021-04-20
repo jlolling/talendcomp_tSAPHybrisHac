@@ -29,7 +29,7 @@ public class ImpexExportRunner extends HybrisHac {
 		File od = of.getParentFile();
 		od.mkdirs();
 		try {
-			impexResult = console
+			impexResult = getConsole()
 				    .impex()
 				    .exportData(
 				        Impex.builder()

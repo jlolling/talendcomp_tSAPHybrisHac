@@ -45,9 +45,6 @@ public class FlexibleSearchRunner extends HybrisHac {
 	private Map<String, String> columnMapping = new HashMap<>();
 
 	public void execute(String query) throws Exception {
-		if (console == null) {
-			throw new IllegalStateException("No connected!");
-		}
 		queryResultCount = 0;
 		currentResultIndex = 0;
 		oneResult = null;
@@ -56,7 +53,7 @@ public class FlexibleSearchRunner extends HybrisHac {
 				.flexibleSearchQuery(query)
 				.maxCount(maxResults)
 				.build();
-		QueryResult result = console.flexibleSearch().query(fsquery);
+		QueryResult result = getConsole().flexibleSearch().query(fsquery);
 		if (result.hasError()) {
 			throw new Exception("Execute query:\n" + query + "\n failed: " + result.getException().getMessage(), result.getException());
 		} else {

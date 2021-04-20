@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <COMPONENT> 
-  <HEADER AUTHOR="Jan Lolling" COMPATIBILITY="ALL" PLATEFORM="ALL" RELEASE_DATE="20210409" SERIAL="" STARTABLE="false" STATUS="PROD" VERSION="4.1" SCHEMA_AUTO_PROPAGATE="true" DATA_AUTO_PROPAGATE="true" HAS_CONDITIONAL_OUTPUTS="false" IS_MULTIPLYING_OUTPUTS="false"> 
+  <HEADER AUTHOR="Jan Lolling" COMPATIBILITY="ALL" PLATEFORM="ALL" RELEASE_DATE="20210421" SERIAL="" STARTABLE="false" STATUS="PROD" VERSION="4.2" SCHEMA_AUTO_PROPAGATE="true" DATA_AUTO_PROPAGATE="true" HAS_CONDITIONAL_OUTPUTS="false" IS_MULTIPLYING_OUTPUTS="false"> 
     <SIGNATURE/> 
   </HEADER>  
   <FAMILIES> 
@@ -45,14 +45,14 @@
     <PARAMETER NAME="LABEL_TIMEOUT" FIELD="LABEL" COLOR="0;0;0" NUM_ROW="31" GROUP="CONNECTION"> 
       <DEFAULT>Timeout in ms. 0 means wait for eternity</DEFAULT> 
     </PARAMETER>  
-    <PARAMETER NAME="RELEASE_LABEL_20210409" FIELD="LABEL" COLOR="0;0;0" NUM_ROW="900">
-      <DEFAULT>Release: 4.1 build at: 20210409</DEFAULT>
+    <PARAMETER NAME="RELEASE_LABEL_20210421" FIELD="LABEL" COLOR="0;0;0" NUM_ROW="900">
+      <DEFAULT>Release: 4.2 build at: 20210421</DEFAULT>
     </PARAMETER>
   </ADVANCED_PARAMETERS>  
   <CODEGENERATION> 
     <IMPORTS> 
-      <IMPORT NAME="jlo-talendcomp-hac" MODULE="jlo-talendcomp-hac-4.1.jar" MVN="mvn:org.talend.libraries/jlo-talendcomp-hac-4.1/6.0.0-SNAPSHOT" REQUIRED="true"/>
-      <IMPORT NAME="jhac-core" MODULE="jhac-core-1.0.jar" MVN="mvn:org.talend.libraries/jhac-core-1.0/6.0.0-SNAPSHOT" REQUIRED="true"/>
+      <IMPORT NAME="jlo-talendcomp-hac" MODULE="jlo-talendcomp-hac-4.2.jar" MVN="mvn:org.talend.libraries/jlo-talendcomp-hac-4.2/6.0.0-SNAPSHOT" REQUIRED="true"/>
+      <IMPORT NAME="jhac-core" MODULE="jhac-core-1.1-SNAPSHOT.jar" MVN="mvn:org.talend.libraries/jhac-core-1.1-SNAPSHOT/6.0.0-SNAPSHOT" REQUIRED="true"/>
       <IMPORT NAME="spring-web" MODULE="spring-web-5.2.6.RELEASE.jar" MVN="mvn:org.talend.libraries/spring-web-5.2.6.RELEASE/6.0.0-SNAPSHOT" REQUIRED="true"/>
       <IMPORT NAME="spring-beans" MODULE="spring-beans-5.2.6.RELEASE.jar" MVN="mvn:org.talend.libraries/spring-beans-5.2.6.RELEASE/6.0.0-SNAPSHOT" REQUIRED="true"/>
       <IMPORT NAME="spring-core" MODULE="spring-core-5.2.6.RELEASE.jar" MVN="mvn:org.talend.libraries/spring-core-5.2.6.RELEASE/6.0.0-SNAPSHOT" REQUIRED="true"/>

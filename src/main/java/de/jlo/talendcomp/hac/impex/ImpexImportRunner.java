@@ -60,7 +60,7 @@ public class ImpexImportRunner extends HybrisHac {
 		}
 		payloadStr = payload.toString();
 		try {
-			ImpexResult result = console.impex()
+			ImpexResult result = getConsole().impex()
 			   .importData(
 					Impex.builder()
 		            	.scriptContent(payloadStr)
