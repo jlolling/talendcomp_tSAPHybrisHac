@@ -21,7 +21,7 @@ This component reads data from Hybris defined by a Flexible Search query (see do
 The component connects to the HAC and executes the given query.
 The component also translates the names from the Talend schema into the technical field names returned by the query.
 
-![Here an simple example job](https://github.com/jlolling/talendcomp_tHybrisHac/blob/master/doc/tSAPHybrisHacFlexibleSearch_example_job_design.png)
+![Here an simple example job](https://github.com/jlolling/talendcomp_tSAPHybrisHac/blob/master/doc/tSAPHybrisHacFlexibleSearch_example_job_design.png)
 The HAC returns the result fields in case of there is no alias always in lower case with prefix "p_".
 If a alias is given it the result field will named axactly like the alias.
 The component tests the given Talend columns and maps them to the returned query fields.
