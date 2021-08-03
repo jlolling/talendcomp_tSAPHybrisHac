@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.jlo.talendcomp.hac</groupId>
 	<artifactId>jlo-talendcomp-hac</artifactId>
-	<version>5.0</version>
+	<version>5.1</version>
 	<name>Hybris Admin Console Interface</name>
 
 	<dependencies>
@@ -46,7 +46,7 @@
 					<archive>
 						<addMavenDescriptor>false</addMavenDescriptor>
 						<manifestEntries>
-							<Implementation-Title>cimt-talendcomp-camunda-dmn</Implementation-Title>
+							<Implementation-Title>talendcomp-camunda-dmn</Implementation-Title>
 							<Implementation-Version>${project.version}</Implementation-Version>
 							<Implementation-Vendor>Jan Lolling</Implementation-Vendor>
 							<Implementation-Timestamp>${maven.build.timestamp}</Implementation-Timestamp>
