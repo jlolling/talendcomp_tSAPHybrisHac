@@ -36,7 +36,7 @@
    }
 %>
 	int nb_line_<%=cid%> = 0;
-	de.jlo.talendcomp.hac.impex.ImpexExportRunner <%=cid%> = new de.jlo.talendcomp.hac.impex.ImpexExportRunner();
+	de.jlo.talendcomp.hac.impex.ScriptRunner <%=cid%> = new de.jlo.talendcomp.hac.impex.ScriptRunner();
 	globalMap.put("<%=cid%>", <%=cid%>);
 	<%=cid%>.setTimeout(<%=timeout%>);
 	// connect to Hybris
