@@ -1,0 +1,78 @@
+<%@ jet 
+	imports="
+		org.talend.core.model.process.INode 
+		org.talend.core.model.process.ElementParameterParser 
+		org.talend.core.model.metadata.IMetadataTable 
+		org.talend.core.model.metadata.IMetadataColumn 
+		org.talend.core.model.process.IConnection
+		org.talend.core.model.process.IConnectionCategory
+		org.talend.core.model.utils.NodeUtil
+		org.talend.designer.codegen.config.CodeGeneratorArgument
+		org.talend.core.model.metadata.types.JavaTypesManager
+		java.util.List 
+		java.util.ArrayList 
+    	java.util.Map		
+	" 
+%>
+<% 
+	CodeGeneratorArgument codeGenArgument = (CodeGeneratorArgument) argument;
+	INode node = (INode) codeGenArgument.getArgument();
+	String cid = node.getUniqueName();
+	List<IMetadataColumn> listColumns = new ArrayList<IMetadataColumn>(); // dummy
+	List<IMetadataTable> metadatas = node.getMetadataList();
+	if (metadatas != null && metadatas.size() > 0) {
+    	IMetadataTable metadata = metadatas.get(0);
+    	if (metadata != null) {
+    		listColumns = metadata.getListColumns();
+		}
+	}
+   String hybrisEndpoint = ElementParameterParser.getValue(node, "__HYBRIS_ENDPOINT__");
+   if (hybrisEndpoint == null || hybrisEndpoint.trim().isEmpty()) {
+   	hybrisEndpoint = "null";
+   }
+   String hybrisLogin = ElementParameterParser.getValue(node, "__HYBRIS_LOGIN__");
+   if (hybrisLogin == null || hybrisLogin.trim().isEmpty()) {
+   	  hybrisLogin = "null";
+   }
+   String hybrisPassword = ElementParameterParser.getValue(node, "__HYBRIS_PASSWORD__");
+   if (hybrisPassword == null || hybrisPassword.trim().isEmpty()) {
+   	  hybrisPassword = "null";
+   }
+   String header = ElementParameterParser.getValue(node, "__IMPEX_HEADER__");
+   if (header != null) {
+	   header = header.trim().replace("\r", "").replace("\n", "\\n\" +\n\"");
+   } else {
+   	  header = "null";
+   }
+   boolean needHtAccessAuth = "true".equals(ElementParameterParser.getValue(node, "__NEED_HTACCESS_AUTH__"));
+   String htaccessLogin = ElementParameterParser.getValue(node, "__HTACCESS_LOGIN__");
+   if (needHtAccessAuth == false || htaccessLogin == null || htaccessLogin.trim().isEmpty()) {
+		htaccessLogin = "null";
+   }
+   String htaccessPassword = ElementParameterParser.getValue(node, "__HTACCESS_PASSWORD__");
+   if (needHtAccessAuth == false || htaccessPassword == null || htaccessPassword.trim().isEmpty()) {
+   		htaccessPassword = "null";
+   }
+   String timeout = ElementParameterParser.getValue(node, "__TIMEOUT__");
+   if (timeout == null || timeout.trim().isEmpty()) {
+   		timeout = "null";
+   }
+%>
+	int nb_line_<%=cid%> = 0;
+	de.jlo.talendcomp.hac.impex.ImpexImportRunner <%=cid%> = new de.jlo.talendcomp.hac.impex.ImpexImportRunner();
+	globalMap.put("<%=cid%>", <%=cid%>);
+	<%=cid%>.setImpexHeader(<%=header%>);
+	<%=cid%>.setTimeout(<%=timeout%>);
+	// connect to Hybris
+	try {
+		<%=cid%>.connect(
+		    <%=hybrisEndpoint%>,
+			<%=hybrisLogin%>, 
+			<%=hybrisPassword%>, 
+			<%=htaccessLogin%>, 
+			<%=htaccessPassword%>);
+	} catch (Exception e) {
+		String message = "Connect to HAC failed: " + e.getMessage();
+		globalMap.put("<%=cid%>_ERROR_MESSAGE", message);
+		throw e;
+	}
