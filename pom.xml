@@ -7,6 +7,17 @@
 	<version>5.1</version>
 	<name>Hybris Admin Console Interface</name>
 
+	<dependencyManagement>
+		<dependencies>
+			<!-- guava-retrying (via jhac-core) declares an open version range for guava -->
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>30.1.1-jre</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
